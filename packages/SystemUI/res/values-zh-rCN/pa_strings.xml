@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * Copyright (C) 2013-2014, ParanoidAndroid Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- QS Battery Tile -->
+    <string name="quick_settings_battery_charging">正在充电</string>
+    <string name="quick_settings_battery_discharging">未充电</string>
+    <!--Screenshot delete -->
+    <string name="screenshot_delete_action">删除</string>
+    <string name="screenshot_delete_confirmation">截图已删除</string>
+
+    <!-- Content description of the data connection type HSPA+ for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_data_connection_HP">HSPA+</string>
+    <!-- QuickSettings: Immersive mode [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_immersive_mode_label">全屏模式</string>
+    <!-- QuickSettings: Immersive mode (Off) [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_immersive_mode_off_label">全屏模式 关</string>
+    <!-- QuickSettings: LTE On [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_lte">LTE</string>
+    <!-- QuickSettings: LTE Off [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_lte_off">LTE 关</string>
+    <!-- QuickSettings: Mobile Network (2G/3G) [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_network_type">网络</string>
+    <string name="quick_settings_network_unknown">未知</string>
+    <!-- QuickSettings: Lightbulb tile [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_lightbulb_label">手电筒</string>
+    <string name="quick_settings_lightbulb_off_label">手电筒 关</string>
+    <!-- QuickSettings: Sleep Tile [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_sleep_label">进入睡眠</string>
+    <!-- USB Tether Tile [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_usb_tether_connected_label">USB共享 关</string>
+    <string name="quick_settings_usb_tether_on_label">USB 共享</string>
+    
+    <!-- Content description of the halo button in the notification panel for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_halo">创建halo通知.</string>
+
+    <!-- HALO -->
+    <string name="halo_dismiss">忽略通知</string>
+    <string name="halo_hide">隐藏</string>
+    <string name="halo_clear_all">忽略所有通知</string>
+    <string name="halo_silence">隐藏 &amp; 静音直到唤醒</string>
+    <string name="halo_tutorial1">我是HALO</string>
+    <string name="halo_tutorial2">双击并拖动来移动我</string>
+    <string name="halo_tutorial3">横向滑动来切换任务</string>
+    <string name="halo_battery_plugged">正在充电</string>
+    <string name="halo_battery_unplugged">未充电</string>
+    <string name="halo_battery_full">已充满</string>
+    <string name="halo_aeroplane1">飞行</string>
+    <string name="halo_aeroplane2">模式</string>
+    <string name="halo_wifi_on">Wifi 开</string>
+    <string name="halo_wifi_off">Wifi 关</string>
+    <string name="halo_signal_bars_4">满格</string>
+    <string name="halo_signal_bars_3">三格</string>
+    <string name="halo_signal_bars_2">两格</string>
+    <string name="halo_signal_bars_1">1格</string>
+    <string name="halo_signal_bars_none">无信号</string>
+</resources>
