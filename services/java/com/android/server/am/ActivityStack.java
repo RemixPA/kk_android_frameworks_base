@@ -75,7 +75,6 @@ import android.os.SystemProperties;
 import android.os.Trace;
 import android.os.UserHandle;
 import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.EventLog;
 import android.util.Slog;
 import android.view.ContextThemeWrapper;
