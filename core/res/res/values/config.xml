@@ -1408,4 +1408,9 @@
     <!-- Timeout in MS for how long you have to long-press the back key to
          kill the foreground app. -->
     <integer name="config_backKillTimeout">1000</integer>
+    
+    <!-- Traffic  -->
+    <integer name="config_networkSpeedIndicatorRefreshTimeout">3000</integer>
+    <integer name="config_networkSpeedIndicatorSingleLineFontSize">15</integer>
+    <integer name="config_networkSpeedIndicatorDualLineFontSize">10</integer>
 </resources>

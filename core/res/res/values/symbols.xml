@@ -1805,4 +1805,9 @@
 
   <!-- Gesture Sensor -->
   <java-symbol type="bool" name="config_enableGestureService" />
+  
+  <!-- Traffic -->
+  <java-symbol type="integer" name="config_networkSpeedIndicatorRefreshTimeout" />
+  <java-symbol type="integer" name="config_networkSpeedIndicatorSingleLineFontSize" />
+  <java-symbol type="integer" name="config_networkSpeedIndicatorDualLineFontSize" />
 </resources>

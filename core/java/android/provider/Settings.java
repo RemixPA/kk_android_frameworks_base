@@ -2869,6 +2869,12 @@ public final class Settings {
          * @hide
          */
         public static final String DOUBLE_TAP_SLEEP_GESTURE = "double_tap_sleep_gesture";
+        
+        /**
+         * show traffic in statusbar. The value is
+         * int (0: Hide  or 1: Only Rx 2: Rx&Tx).
+         */
+        public static final String STATUS_BAR_TRAFFIC_STYLE = "status_bar_traffic_style";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
