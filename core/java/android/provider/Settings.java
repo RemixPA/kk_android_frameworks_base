@@ -2812,6 +2812,12 @@ public final class Settings {
           * @hide
           */
          public static final String KEY_APP_SWITCH_LONG_PRESS_ACTION = "key_app_switch_long_press_action";
+         
+         /**
+          * Whether enabled PackageInstaller Quick Mode
+          * @hide
+          */
+         public static final String PACKAGE_INSTALLER_QUICK_MODE_ENABLED = "package_installer_quick_mode_enabled";
 
         /**
          * Allows to show the background activity back the lockscreen
