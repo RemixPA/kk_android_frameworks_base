@@ -392,6 +392,15 @@ public class StatusBarManagerService extends IStatusBarService.Stub
             } catch (RemoteException ex) {}
         }
     }
+    
+    @Override
+    public void toggleLastApp() {
+        if (mBar != null) {
+            try {
+                mBar.toggleLastApp();
+            } catch (RemoteException ex) {}
+        }
+    }
 
     @Override
     public void setCurrentUser(int newUserId) {

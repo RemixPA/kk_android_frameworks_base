@@ -57,6 +57,7 @@ public class CommandQueue extends IStatusBar.Stub {
     private static final int MSG_PRELOAD_RECENT_APPS        = 14 << MSG_SHIFT;
     private static final int MSG_CANCEL_PRELOAD_RECENT_APPS = 15 << MSG_SHIFT;
     private static final int MSG_SET_WINDOW_STATE           = 16 << MSG_SHIFT;
+    private static final int MSG_TOGGLE_LAST_APP            = 17 << MSG_SHIFT;
 
     public static final int FLAG_EXCLUDE_NONE = 0;
     public static final int FLAG_EXCLUDE_SEARCH_PANEL = 1 << 0;
@@ -98,6 +99,7 @@ public class CommandQueue extends IStatusBar.Stub {
         public void preloadRecentApps();
         public void showSearchPanel();
         public void hideSearchPanel();
+        public void toggleLastApp();
         public void cancelPreloadRecentApps();
         public void setWindowState(int window, int state);
     }
@@ -226,6 +228,13 @@ public class CommandQueue extends IStatusBar.Stub {
             mHandler.obtainMessage(MSG_CANCEL_PRELOAD_RECENT_APPS, 0, 0, null).sendToTarget();
         }
     }
+    
+    public void toggleLastApp() {
+        synchronized (mList) {
+            mHandler.removeMessages(MSG_TOGGLE_LAST_APP);
+            mHandler.obtainMessage(MSG_TOGGLE_LAST_APP, 0, 0, null).sendToTarget();
+        }
+    }
 
     public void setWindowState(int window, int state) {
         synchronized (mList) {
@@ -310,6 +319,9 @@ public class CommandQueue extends IStatusBar.Stub {
                     break;
                 case MSG_CANCEL_PRELOAD_RECENT_APPS:
                     mCallbacks.cancelPreloadRecentApps();
+                    break;
+                case MSG_TOGGLE_LAST_APP:
+                    mCallbacks.toggleLastApp();
                     break;
                 case MSG_SET_WINDOW_STATE:
                     mCallbacks.setWindowState(msg.arg1, msg.arg2);

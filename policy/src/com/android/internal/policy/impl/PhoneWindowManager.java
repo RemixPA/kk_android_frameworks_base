@@ -176,7 +176,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     private static final int KEY_ACTION_VOICE_SEARCH = 4;
     private static final int KEY_ACTION_IN_APP_SEARCH = 5;
     private static final int KEY_ACTION_SLEEP = 6;
-    private static final int KEY_ACTION_LAUNCH_CAMERA = 7;
+    private static final int KEY_ACTION_LAST_APP = 7;
+    private static final int KEY_ACTION_LAUNCH_CAMERA = 8;
     
     // Masks for checking presence of hardware keys.
     // Must match values in core/res/res/values/config.xml
@@ -916,6 +917,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 break;
             case KEY_ACTION_SLEEP:
                 mPowerManager.goToSleep(SystemClock.uptimeMillis());
+                break;
+            case KEY_ACTION_LAST_APP:
+                toggleLastApp();
                 break;
             case KEY_ACTION_LAUNCH_CAMERA:
                 triggerVirtualKeypress(KeyEvent.KEYCODE_CAMERA);
@@ -2816,6 +2820,18 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             // re-acquire status bar service next time it is needed.
             mStatusBarService = null;
         }
+    }
+    
+    private void toggleLastApp() {
+        try {
+            IStatusBarService statusbar = getStatusBarService();
+            if (statusbar != null) {
+                statusbar.toggleLastApp();
+            }
+       } catch (RemoteException e) {
+            Slog.e(TAG, "RemoteException when toggling last app", e);
+            mStatusBarService = null;
+       }
     }
 
     /**
