@@ -23,11 +23,11 @@
     <!-- Button to reboot the device, within the reboot options dialog -->
     <string name="reboot_reboot">@string/global_action_reboot</string>
     <!-- Button to reboot the device into recovery, within the reboot options dialog -->
-    <string name="reboot_recovery">Recovery 模式</string>
+    <string name="reboot_recovery">Recovery模式</string>
     <!-- Button to reboot the device into fastboot, within the reboot options dialog -->
-    <string name="reboot_fastboot">Fastboot 模式</string>
+    <string name="reboot_fastboot">Fastboot模式</string>
     <!-- Button to reboot the phone into download, within the Reboot Options dialog -->
-    <string name="reboot_download">Download 模式</string>
+    <string name="reboot_download">Download模式</string>
 
     <!-- Reboot confirmation dialog title -->
     <string name="reboot_system" product="tablet">重启平板</string>

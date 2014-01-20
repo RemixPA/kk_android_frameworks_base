@@ -46,9 +46,28 @@
     <string name="quick_settings_usb_tether_connected_label">USB共享 关</string>
     <string name="quick_settings_usb_tether_on_label">USB 共享</string>
     
-    <!-- Content description of the halo button in the notification panel for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
-    <string name="accessibility_halo">创建halo通知.</string>
-
+    <!-- QuickSettings: Sleep Tile [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_sleep_action_label">睡眠模式</string>
+    <string name="quick_settings_sleep_time_15_label">15 秒</string>
+    <string name="quick_settings_sleep_time_30_label">30 秒</string>
+    <string name="quick_settings_sleep_time_60_label">60 秒</string>
+    <string name="quick_settings_sleep_time_120_label">2 分钟</string>
+    <string name="quick_settings_sleep_time_300_label">5 分钟</string>
+    <string name="quick_settings_sleep_time_600_label">10 分钟</string>
+    <string name="quick_settings_sleep_time_1800_label">30 分钟</string>
+    <string name="quick_settings_sleep_time_unknown_label">@string/quick_settings_network_unknown</string>
+    <!-- QuickSettings: Wifi AP Tile [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_wifi_ap_label">Wifi热点</string>
+    <string name="quick_settings_wifi_ap_off_label">Wifi热点 关</string>
+    <!-- Quick Settings Bluetooth Extra Tile [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_bluetooth_not_discoverable_label">不可被检测</string>
+    <string name="quick_settings_bluetooth_discoverable_label">可被检测</string>
+    <string name="quick_settings_bluetooth_disabled">关</string>
+    <!-- Quick Settings Location Extra Tile [CHAR LIMIT=NONE] -->
+    <string name="quick_settings_location_mode_high_label">准确度高</string>
+    <string name="quick_settings_location_mode_battery_label">耗电量低</string>
+    <string name="quick_settings_location_mode_sensors_label">仅限设备</string>
+    
     <!-- HALO -->
     <string name="halo_dismiss">忽略通知</string>
     <string name="halo_hide">隐藏</string>
@@ -57,16 +76,6 @@
     <string name="halo_tutorial1">我是HALO</string>
     <string name="halo_tutorial2">双击并拖动来移动我</string>
     <string name="halo_tutorial3">横向滑动来切换任务</string>
-    <string name="halo_battery_plugged">正在充电</string>
-    <string name="halo_battery_unplugged">未充电</string>
-    <string name="halo_battery_full">已充满</string>
-    <string name="halo_aeroplane1">飞行</string>
-    <string name="halo_aeroplane2">模式</string>
-    <string name="halo_wifi_on">Wifi 开</string>
-    <string name="halo_wifi_off">Wifi 关</string>
-    <string name="halo_signal_bars_4">满格</string>
-    <string name="halo_signal_bars_3">三格</string>
-    <string name="halo_signal_bars_2">两格</string>
-    <string name="halo_signal_bars_1">1格</string>
-    <string name="halo_signal_bars_none">无信号</string>
+    <!-- Content description of the halo button in the notification panel for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_halo">创建halo通知</string>
 </resources>
