@@ -47,4 +47,9 @@
     <string name="permdesc_interceptSmsSent">允许应用
         中断正在发送的信息
         恶意程序可能使用该权限来阻止发送信息</string>
+        
+    <!-- Setting confirmation dialog strings. Shown when any UI interaction can be modified by user input -->
+    <string name="setting_confirmation_ask_me_later">下次询问</string>
+    <string name="setting_confirmation_yes">是</string>
+    <string name="setting_confirmation_no">否</string>
 </resources>
