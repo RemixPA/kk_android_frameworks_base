@@ -216,6 +216,7 @@ LOCAL_SHARED_LIBRARIES := \
 	libicuuc \
 	libicui18n \
 	libmedia \
+	libmokee-phoneloc-jni \
 	libwpa_client \
 	libjpeg \
 	libusbhost \
