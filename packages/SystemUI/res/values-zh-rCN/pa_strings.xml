@@ -71,7 +71,7 @@
     <string name="quick_settings_location_mode_battery_label">耗电量低</string>
     <string name="quick_settings_location_mode_sensors_label">仅限设备</string>
     <!-- Quick Settings Volume Tile -->
-    <string name="quick_settings_volume_label">Volume</string>
+    <string name="quick_settings_volume_label">音量</string>
     
     <!-- HALO -->
     <string name="halo_dismiss">忽略通知</string>
