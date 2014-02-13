@@ -106,44 +106,6 @@ public class KeyButtonView extends ImageView {
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
-    public void setCode(int code) {
-        mCode = code;
-    }
-
-    public void setClickAction(String action) {
-        mClickAction = action;
-        setOnClickListener(mClickListener);
-    }
-
-    public void setLongpressAction(String action) {
-        mLongpressAction = action;
-        if (!action.equals(ButtonsConstants.ACTION_NULL)) {
-            mSupportsLongpress = true;
-            setOnLongClickListener(mLongPressListener);
-        }
-    }
-
-    public void setGlowBackground(int id) {
-        mGlowBG = getResources().getDrawable(id);
-        if (mGlowBG != null) {
-            setDrawingAlpha(mQuiescentAlpha);
-            mGlowWidth = mGlowBG.getIntrinsicWidth();
-            mGlowHeight = mGlowBG.getIntrinsicHeight();
-            int defaultColor = mContext.getResources().getColor(
-                    R.color.navigationbar_button_glow_default_color);
-            mGlowBGColor = Settings.System.getIntForUser(mContext.getContentResolver(),
-                    Settings.System.NAVIGATION_BAR_GLOW_TINT,
-                    -2, UserHandle.USER_CURRENT);
-
-            if (mGlowBGColor == -2) {
-                mGlowBGColor = defaultColor;
-            }
-            mGlowBG.setColorFilter(null);
-            mGlowBG.setColorFilter(mGlowBGColor, Mode.SRC_ATOP);
-
-        }
-    }
-
     @Override
     protected void onDraw(Canvas canvas) {
         if (mGlowBG != null) {
