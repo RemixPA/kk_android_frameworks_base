@@ -556,13 +556,6 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     public void onHeadsUpDismissed() {
     }
-    
-    @Override
-    public void toggleLastApp() {
-        int msg = MSG_TOGGLE_LAST_APP;
-        mHandler.removeMessages(msg);
-        mHandler.sendEmptyMessage(msg);
-    }
 
     @Override
     public void toggleRecentApps() {
@@ -658,34 +651,6 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     protected abstract View getStatusBarView();
 
-    protected void toggleLastAppImpl() {
-        int lastAppId = 0;
-        int looper = 1;
-        String packageName;
-        final Intent intent = new Intent(Intent.ACTION_MAIN);
-        final ActivityManager am = (ActivityManager) mContext
-                .getSystemService(Activity.ACTIVITY_SERVICE);
-        String defaultHomePackage = "com.android.launcher";
-        intent.addCategory(Intent.CATEGORY_HOME);
-        final ResolveInfo res = mContext.getPackageManager().resolveActivity(intent, 0);
-        if (res.activityInfo != null && !res.activityInfo.packageName.equals("android")) {
-            defaultHomePackage = res.activityInfo.packageName;
-        }
-        List <ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(5);
-        // lets get enough tasks to find something to switch to
-        // Note, we'll only get as many as the system currently has - up to 5
-        while ((lastAppId == 0) && (looper < tasks.size())) {
-            packageName = tasks.get(looper).topActivity.getPackageName();
-            if (!packageName.equals(defaultHomePackage) && !packageName.equals("com.android.systemui")) {
-                lastAppId = tasks.get(looper).id;
-            }
-            looper++;
-        }
-        if (lastAppId != 0) {
-            am.moveTaskToFront(lastAppId, am.MOVE_TASK_NO_USER_ACTION);
-        }
-    }
-
     protected View.OnTouchListener mRecentsPreloadOnTouchListener = new View.OnTouchListener() {
         // additional optimization when we have software system buttons - start loading the recent
         // tasks on touch down
@@ -764,10 +729,6 @@ public abstract class BaseStatusBar extends SystemUI implements
              case MSG_CANCEL_PRELOAD_RECENT_APPS:
                   cancelPreloadingRecentTasksList();
                   break;
-             case MSG_TOGGLE_LAST_APP:
-                 if (DEBUG) Log.d(TAG, "toggle last app");
-                 toggleLastAppImpl();
-                 break;
              case MSG_OPEN_SEARCH_PANEL:
                  if (DEBUG) Log.d(TAG, "opening search panel");
                  if (mSearchPanelView != null && mSearchPanelView.isAssistantAvailable()) {
@@ -790,7 +751,7 @@ public abstract class BaseStatusBar extends SystemUI implements
         }
     }
     
-    private void getLastApp() {
+    protected void getLastApp() {
         int lastAppId = 0;
         int looper = 1;
         String packageName;
