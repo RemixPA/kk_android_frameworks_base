@@ -698,10 +698,6 @@ public final class BatteryService extends Binder {
             }
         }
     };
-    
-    private synchronized void updateLedPulse() {
-        mLed.updateLightsLocked();
-    }
 
     private synchronized void updateLedPulse() {
         mLed.updateLightsLocked();
