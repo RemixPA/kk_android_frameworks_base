@@ -54,7 +54,8 @@ public class RecentCard extends Card {
         mHeader.setButtonExpandVisible(true);
 
         // Construct app icon view.
-        mRecentIcon = new RecentAppIcon(context);
+        mRecentIcon = new RecentAppIcon(
+                context, td.resolveInfo, td.identifier, scaleFactor, td.getIsFavorite());
         mRecentIcon.setExternalUsage(true);
 
         // Construct expanded area view.
@@ -77,7 +78,8 @@ public class RecentCard extends Card {
             mHeader.setTitle((String) td.getLabel());
         }
         if (mRecentIcon != null) {
-            mRecentIcon.updateIcon(td.packageName);
+            mRecentIcon.updateIcon(
+                    td.resolveInfo, td.identifier, scaleFactor, td.getIsFavorite());
         }
         if (mExpandedCard != null) {
             // Read flags and set accordingly initial expanded state.

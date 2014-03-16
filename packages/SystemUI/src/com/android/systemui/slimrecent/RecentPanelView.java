@@ -23,6 +23,7 @@ import android.app.ActivityOptions;
 import android.app.TaskStackBuilder;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -64,7 +65,9 @@ public class RecentPanelView {
     private static final int DISPLAY_TASKS = 20;
     public static final int MAX_TASKS = DISPLAY_TASKS + 1; // allow extra for non-apps
 
-    private static final int EXPANDED_STATE_UNKNOWN   = 0;
+    public static final String TASK_PACKAGE_IDENTIFIER = "#ident:";
+
+    private static final int EXPANDED_STATE_UNKNOWN  = 0;
     public static final int EXPANDED_STATE_EXPANDED  = 1;
     public static final int EXPANDED_STATE_COLLAPSED = 2;
     public static final int EXPANDED_STATE_BY_SYSTEM = 4;
@@ -150,7 +153,8 @@ public class RecentPanelView {
                 startApplication(td);
             }
         });
-        // Listen for onLongClick to open app details with custom animation
+
+        // Listen for onLongClick to open popup menu
         card.setOnLongClickListener(new Card.OnLongCardClickListener() {
             @Override
             public boolean onLongClick(Card card, View view) {
@@ -158,6 +162,21 @@ public class RecentPanelView {
                 return true;
             }
         });
+
+        // App icon has own onLongClick action. Listen for it and
+        // process the favorite action for it.
+        card.addPartialOnLongClickListener(Card.CLICK_LISTENER_THUMBNAIL_VIEW,
+                new Card.OnLongCardClickListener() {
+            @Override
+            public boolean onLongClick(Card card, View view) {
+                RecentImageView favoriteIcon =
+                        (RecentImageView) view.findViewById(R.id.card_thumbnail_favorite);
+                favoriteIcon.setVisibility(td.getIsFavorite() ? View.INVISIBLE : View.VISIBLE);
+                handleFavoriteEntry(td);
+                return true;
+            }
+        });
+
         // Listen for card is expanded to save current value for next recent call
         card.setOnExpandAnimatorEndListener(new Card.OnExpandAnimatorEndListener() {
             @Override
@@ -185,6 +204,143 @@ public class RecentPanelView {
             }
         });
         return card;
+    }
+
+    /**
+     * Handle favorite task entry (add or remove) if user longpressed on app icon.
+     */
+    private void handleFavoriteEntry(TaskDescription td) {
+        ContentResolver resolver = mContext.getContentResolver();
+        final String favorites = Settings.System.getStringForUser(
+                    resolver, Settings.System.RECENT_PANEL_FAVORITES,
+                    UserHandle.USER_CURRENT);
+        String entryToSave = "";
+
+        if (!td.getIsFavorite()) {
+            if (favorites != null && !favorites.isEmpty()) {
+                entryToSave += favorites + "|";
+            }
+            entryToSave += td.identifier;
+        } else {
+            if (favorites == null) {
+                return;
+            }
+            for (String favorite : favorites.split("\\|")) {
+                if (favorite.equals(td.identifier)) {
+                    continue;
+                }
+                entryToSave += favorite + "|";
+            }
+            if (!entryToSave.isEmpty()) {
+                entryToSave = entryToSave.substring(0, entryToSave.length() - 1);
+            }
+        }
+
+        td.setIsFavorite(!td.getIsFavorite());
+
+        Settings.System.putStringForUser(
+                resolver, Settings.System.RECENT_PANEL_FAVORITES,
+                entryToSave,
+                UserHandle.USER_CURRENT);
+    }
+
+    /**
+     * Construct popup menu for longpress.
+     */
+    private void constructMenu(final View selectedView, final String packageName) {
+        if (selectedView == null) {
+            return;
+        }
+        // Force theme change to choose custom defined menu layout.
+        final Context layoutContext = new ContextThemeWrapper(mContext, R.style.RecentBaseStyle);
+
+        final PopupMenu popup = new PopupMenu(layoutContext, selectedView, Gravity.RIGHT);
+        mPopup = popup;
+
+        // If recent panel is drawn on the right edge we allow the menu
+        // if needed to draw over the left container edge.
+        popup.setAllowLeftOverdraw(mMainGravity == Gravity.RIGHT);
+
+        // Add app detail menu entry.
+        popup.getMenu().add(0, MENU_APP_DETAILS_ID, 0,
+                mContext.getResources().getString(R.string.status_bar_recent_inspect_item_title));
+
+        // Add playstore or amazon entry if it is provided by the application.
+        if (checkAppInstaller(packageName, PLAYSTORE_REFERENCE)) {
+            popup.getMenu().add(0, MENU_APP_PLAYSTORE_ID, 0,
+                    getApplicationLabel(PLAYSTORE_REFERENCE));
+        } else if (checkAppInstaller(packageName, AMAZON_REFERENCE)) {
+            popup.getMenu().add(0, MENU_APP_AMAZON_ID, 0,
+                    getApplicationLabel(AMAZON_REFERENCE));
+        }
+
+        // Actually peform the actions onClick.
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == MENU_APP_DETAILS_ID) {
+                    startApplicationDetailsActivity(packageName, null, null);
+                } else if (item.getItemId() == MENU_APP_PLAYSTORE_ID) {
+                    startApplicationDetailsActivity(null,
+                            PLAYSTORE_APP_URI_QUERY + packageName, PLAYSTORE_REFERENCE);
+                } else if (item.getItemId() == MENU_APP_AMAZON_ID) {
+                    startApplicationDetailsActivity(null,
+                            AMAZON_APP_URI_QUERY + packageName, AMAZON_REFERENCE);
+                }
+                return true;
+            }
+        });
+        popup.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            public void onDismiss(PopupMenu menu) {
+                mPopup = null;
+            }
+        });
+        popup.show();
+    }
+
+    /**
+     * Check if the requested app was installed by the reference store.
+     */
+    private boolean checkAppInstaller(String packageName, String reference) {
+        if (packageName == null) {
+            return false;
+        }
+        PackageManager pm = mContext.getPackageManager();
+        if (!isReferenceInstalled(reference, pm)) {
+            return false;
+        }
+
+        String installer = pm.getInstallerPackageName(packageName);
+        if (DEBUG) Log.d(TAG, "Package was installed by: " + installer);
+        if (reference.equals(installer)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check is store reference is installed.
+     */
+    private boolean isReferenceInstalled(String packagename, PackageManager pm) {
+        try {
+            pm.getPackageInfo(packagename, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (NameNotFoundException e) {
+            if (DEBUG) Log.e(TAG, "Store is not installed: " + packagename, e);
+            return false;
+        }
+    }
+
+    /**
+     * Get application launcher label of installed references.
+     */
+    private String getApplicationLabel(String packageName) {
+        final PackageManager pm = mContext.getPackageManager();
+        final Intent intent = pm.getLaunchIntentForPackage(packageName);
+        final ResolveInfo resolveInfo = pm.resolveActivity(intent, 0);
+        if (resolveInfo != null) {
+            return resolveInfo.activityInfo.loadLabel(pm).toString();
+        }
+        return null;
     }
 
     /**
@@ -244,14 +400,14 @@ public class RecentPanelView {
      * Remove application bitmaps from LRU cache and expanded state list.
      */
     private void removeApplicationBitmapCacheAndExpandedState(TaskDescription td) {
-            // Remove application thumbnail.
-            CacheController.getInstance(mContext)
-                    .removeBitmapFromMemCache(String.valueOf(td.persistentTaskId));
-            // Remove application icon.
-            CacheController.getInstance(mContext)
-                    .removeBitmapFromMemCache(td.packageName);
-            // Remove from expanded state list.
-            removeExpandedTaskState(td.getLabel());
+        // Remove application thumbnail.
+        CacheController.getInstance(mContext)
+                .removeBitmapFromMemCache(String.valueOf(td.persistentTaskId));
+        // Remove application icon.
+        CacheController.getInstance(mContext)
+                .removeBitmapFromMemCache(td.identifier);
+        // Remove from expanded state list.
+        removeExpandedTaskState(td.identifier);
     }
 
     /**
@@ -308,7 +464,7 @@ public class RecentPanelView {
      */
     private TaskDescription createTaskDescription(int taskId, int persistentTaskId,
             Intent baseIntent, ComponentName origActivity,
-            CharSequence description, int expandedState) {
+            CharSequence description, boolean isFavorite, int expandedState) {
 
         final Intent intent = new Intent(baseIntent);
         if (origActivity != null) {
@@ -322,13 +478,21 @@ public class RecentPanelView {
             final ActivityInfo info = resolveInfo.activityInfo;
             final String title = info.loadLabel(pm).toString();
 
+            String identifier = TASK_PACKAGE_IDENTIFIER;
+            final ComponentName component = intent.getComponent();
+            if (component != null) {
+                identifier += component.flattenToString();
+            } else {
+                identifier += info.packageName;
+            }
+
             if (title != null && title.length() > 0) {
                 if (DEBUG) Log.v(TAG, "creating activity desc for id="
                         + persistentTaskId + ", label=" + title);
 
                 final TaskDescription item = new TaskDescription(taskId,
                         persistentTaskId, resolveInfo, baseIntent, info.packageName,
-                        description, expandedState);
+                        identifier, description, isFavorite, expandedState);
                 item.setLabel(title);
                 return item;
             } else {
@@ -349,6 +513,18 @@ public class RecentPanelView {
         mIsLoading = true;
         updateExpandedTaskStates();
         mTasks.clear();
+
+        // Check and get user favorites.
+        final String favorites = Settings.System.getStringForUser(
+                mContext.getContentResolver(), Settings.System.RECENT_PANEL_FAVORITES,
+                UserHandle.USER_CURRENT);
+        final ArrayList<String> favList = new ArrayList<String>();
+        final ArrayList<TaskDescription> nonFavoriteTasks = new ArrayList<TaskDescription>();
+        if (favorites != null && !favorites.isEmpty()) {
+            for (String favorite : favorites.split("\\|")) {
+                favList.add(favorite);
+            }
+        }
 
         final PackageManager pm = mContext.getPackageManager();
         final ActivityManager am = (ActivityManager)
@@ -395,26 +571,54 @@ public class RecentPanelView {
 
             TaskDescription item = createTaskDescription(recentInfo.id,
                     recentInfo.persistentId, recentInfo.baseIntent,
-                    recentInfo.origActivity, recentInfo.description, EXPANDED_STATE_UNKNOWN);
+                    recentInfo.origActivity, recentInfo.description,
+                    false, EXPANDED_STATE_UNKNOWN);
 
             if (item != null) {
-                // FirstExpandedItems value forces to show always the app screenshot
-                // if the old state is not known.
-                // All other items we check if they were expanded from the user
-                // in last known recent app list and restore the state.
-                int oldState = getExpandedState(item);
-                if (DEBUG) Log.v(TAG, "old expanded state = " + oldState);
-                if (firstItems < firstExpandedItems) {
-                    item.setExpandedState(oldState | EXPANDED_STATE_BY_SYSTEM);
-                } else {
-                    if ((oldState & EXPANDED_STATE_BY_SYSTEM) != 0) {
-                        oldState &= ~EXPANDED_STATE_BY_SYSTEM;
+                for (String fav : favList) {
+                    if (fav.equals(item.identifier)) {
+                        item.setIsFavorite(true);
+                        break;
                     }
-                    item.setExpandedState(oldState);
+                }
+
+                if (i == 0) {
+                    // Skip the first task for our list but save it for later use.
+                    mFirstTask = item;
+                } else {
+                    // FirstExpandedItems value forces to show always the app screenshot
+                    // if the old state is not known.
+                    // All other items we check if they were expanded from the user
+                    // in last known recent app list and restore the state.
+                    int oldState = getExpandedState(item);
+                    if (DEBUG) Log.v(TAG, "old expanded state = " + oldState);
+                    if (firstItems < firstExpandedItems) {
+                        item.setExpandedState(oldState | EXPANDED_STATE_BY_SYSTEM);
+                        // The first tasks are always added to the task list.
+                        mTasks.add(item);
+                    } else {
+                        if ((oldState & EXPANDED_STATE_BY_SYSTEM) != 0) {
+                            oldState &= ~EXPANDED_STATE_BY_SYSTEM;
+                        }
+                        item.setExpandedState(oldState);
+                        // Favorite tasks are added next. Non favorite
+                        // we hold for a short time in an extra list.
+                        if (item.getIsFavorite()) {
+                            mTasks.add(item);
+                        } else {
+                            nonFavoriteTasks.add(item);
+                        }
+                    }
+                    firstItems++;
                 }
                 firstItems++;
                 mTasks.add(item);
             }
+        }
+
+        // Add now the non favorite tasks to the final task list.
+        for (TaskDescription item : nonFavoriteTasks) {
+            mTasks.add(item);
         }
 
         mTasksSize = mTasks.size();
@@ -441,14 +645,15 @@ public class RecentPanelView {
         for (TaskDescription item : mTasks) {
             boolean updated = false;
             for (TaskExpandedStates expandedState : mExpandedTaskStates) {
-                if (item.getLabel().equals(expandedState.getLabel())) {
+                if (item.identifier.equals(expandedState.getIdentifier())) {
                     updated = true;
                     expandedState.setExpandedState(item.getExpandedState());
                 }
             }
             if (!updated) {
                 mExpandedTaskStates.add(
-                        new TaskExpandedStates(item.getLabel(), item.getExpandedState()));
+                        new TaskExpandedStates(
+                                item.identifier, item.getExpandedState()));
             }
         }
     }
@@ -459,9 +664,9 @@ public class RecentPanelView {
      */
     private int getExpandedState(TaskDescription item) {
         for (TaskExpandedStates oldTask : mExpandedTaskStates) {
-            if (DEBUG) Log.v(TAG, "old task label = "+ oldTask.getLabel()
-                    + " new task label = " + item.getLabel());
-            if (item.getLabel().equals(oldTask.getLabel())) {
+            if (DEBUG) Log.v(TAG, "old task launch uri = "+ oldTask.getIdentifier()
+                    + " new task launch uri = " + item.identifier);
+            if (item.identifier.equals(oldTask.getIdentifier())) {
                     return oldTask.getExpandedState();
             }
         }
@@ -472,10 +677,10 @@ public class RecentPanelView {
      * We are holding a list of user expanded state of apps.
      * Remove expanded state entry due that app was removed by the user.
      */
-    private void removeExpandedTaskState(String label) {
+    private void removeExpandedTaskState(String identifier) {
         TaskExpandedStates expandedStateToDelete = null;
         for (TaskExpandedStates expandedState : mExpandedTaskStates) {
-            if (expandedState.getLabel().equals(label)) {
+            if (expandedState.getIdentifier().equals(identifier)) {
                 expandedStateToDelete = expandedState;
             }
         }
@@ -605,6 +810,7 @@ public class RecentPanelView {
 
             int oldSize = mCards.size();
             mCounter = 0;
+
             // Construct or update cards and publish cards recursive with current tasks.
             for (int i = mTasksSize - 1; i >= 0; i--) {
                 if (isCancelled() || mCancelledByUser) {
@@ -679,16 +885,16 @@ public class RecentPanelView {
      * This class describes one expanded state object.
      */
     private static final class TaskExpandedStates {
-        private String mLabel;
+        private String mIdentifier;
         private int mExpandedState;
 
-        public TaskExpandedStates(String label, int expandedState) {
-            mLabel = label;
+        public TaskExpandedStates(String identifier, int expandedState) {
+            mIdentifier = identifier;
             mExpandedState = expandedState;
         }
 
-        public String getLabel() {
-            return mLabel;
+        public String getIdentifier() {
+            return mIdentifier;
         }
 
         public int getExpandedState() {

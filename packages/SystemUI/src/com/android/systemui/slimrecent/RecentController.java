@@ -257,8 +257,8 @@ public class RecentController implements RecentPanelView.OnExitListener,
      * External call. Preload recent tasks.
      */
     public void preloadRecentTasksList() {
-        if (DEBUG) Log.d(TAG, "preloading recents");
         if (mRecentPanelView != null) {
+            if (DEBUG) Log.d(TAG, "preloading recents");
             mIsPreloaded = true;
             setSystemUiVisibilityFlags();
             mRecentPanelView.setCancelledByUser(false);
@@ -270,8 +270,9 @@ public class RecentController implements RecentPanelView.OnExitListener,
      * External call. Cancel preload recent tasks.
      */
     public void cancelPreloadingRecentTasksList() {
-        if (DEBUG) Log.d(TAG, "cancel preloading recents");
-        if (mRecentPanelView != null) {
+        if (mRecentPanelView != null && !isShowing()) {
+            if (DEBUG) Log.d(TAG, "cancel preloading recents");
+            mIsPreloaded = false;
             mRecentPanelView.setCancelledByUser(true);
         }
         hideRecents(false);
@@ -454,6 +455,63 @@ public class RecentController implements RecentPanelView.OnExitListener,
             mAnimationState = ANIMATION_STATE_NONE;
         }
     };
+
+    /**
+     * Settingsobserver to take care of the user settings.
+     * Either gravity or scale factor of our recent panel can change.
+     */
+    private class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.RECENT_PANEL_GRAVITY),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.RECENT_PANEL_SCALE_FACTOR),
+                    false, this, UserHandle.USER_ALL);
+            update();
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            update();
+        }
+
+        public void update() {
+            // Close recent panel if it is opened.
+            hideRecents(false);
+
+            ContentResolver resolver = mContext.getContentResolver();
+
+            // Get user gravity.
+            mUserGravity = Settings.System.getIntForUser(
+                    resolver, Settings.System.RECENT_PANEL_GRAVITY, Gravity.RIGHT,
+                    UserHandle.USER_CURRENT);
+
+            // Set main gravity and background images.
+            setGravityAndImageResources();
+
+            // Get user scale factor.
+            float scaleFactor = Settings.System.getIntForUser(
+                    resolver, Settings.System.RECENT_PANEL_SCALE_FACTOR, 100,
+                    UserHandle.USER_CURRENT) / 100.0f;
+
+            // If changed set new scalefactor, rebuild the recent panel
+            // and notify RecentPanelView about new value.
+            if (scaleFactor != mScaleFactor) {
+                mScaleFactor = scaleFactor;
+                rebuildRecentsScreen();
+            }
+            if (mRecentPanelView != null) {
+                mRecentPanelView.setScaleFactor(mScaleFactor);
+            }
+        }
+    }
 
     /**
      * Extended SimpleOnScaleGestureListener to take
