@@ -190,6 +190,12 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     private static final int KEY_MASK_APP_SWITCH = 0x10;
     private static final int KEY_MASK_CAMERA = 0x20;
 
+    // Immersive states
+    private static final int IMMERSIVE_MODE_OFF = 0;
+    private static final int IMMERSIVE_MODE_FULL = 1;
+    private static final int IMMERSIVE_MODE_HIDE_ONLY_NAVBAR = 2;
+    private static final int IMMERSIVE_MODE_HIDE_ONLY_STATUSBAR = 3;
+
     /**
      * These are the system UI flags that, when changing, can cause the layout
      * of the screen to change.
@@ -422,7 +428,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     // What we last reported to system UI about whether the compatibility
     // menu needs to be displayed.
     boolean mLastFocusNeedsMenu = false;
-    // Immersive mode(s)
+    // Immersive
     int mImmersiveModeStyle = 0;
 
     FakeWindow mHideNavFakeWindow = null;
@@ -1948,7 +1954,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         if (hasNavigationBar()) {
             // For a basic navigation bar, when we are in landscape mode we place
             // the navigation bar to the side.
-            if (mNavigationBarCanMove && fullWidth > fullHeight) {
+            if (!immersiveModeHidesNavigationBar() && mNavigationBarCanMove && fullWidth > fullHeight) {
                 return fullWidth - mNavigationBarWidthForRotation[rotation];
             }
         }
@@ -1959,7 +1965,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         if (hasNavigationBar()) {
             // For a basic navigation bar, when we are in portrait mode we place
             // the navigation bar to the bottom.
-            if (!mNavigationBarCanMove || fullWidth < fullHeight) {
+            if (!immersiveModeHidesNavigationBar() && !mNavigationBarCanMove || fullWidth < fullHeight) {
                 return fullHeight - mNavigationBarHeightForRotation[rotation];
             }
         }
@@ -3950,18 +3956,18 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     }
 
     private int updateWindowManagerVisibilityFlagsForImmersiveModes(int vis) {
-        if (mImmersiveModeStyle != 0) {
+        if (mImmersiveModeStyle != IMMERSIVE_MODE_OFF) {
             vis |= FLAG_FULLSCREEN;
         }
         return vis;
     }
 
     private boolean immersiveModeHidesNavigationBar() {
-        return mImmersiveModeStyle == 1 || mImmersiveModeStyle == 2;
+        return mImmersiveModeStyle == IMMERSIVE_MODE_FULL || mImmersiveModeStyle == IMMERSIVE_MODE_HIDE_ONLY_NAVBAR;
     }
 
     private boolean immersiveModeHidesStatusBar() {
-        return mImmersiveModeStyle == 1 || mImmersiveModeStyle == 3;
+        return mImmersiveModeStyle == IMMERSIVE_MODE_FULL || mImmersiveModeStyle == IMMERSIVE_MODE_HIDE_ONLY_STATUSBAR;
     }
 
     private void offsetInputMethodWindowLw(WindowState win) {
@@ -4720,7 +4726,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 }
                 result &= ~ACTION_PASS_TO_USER;
                 if (down) {
-                    if (mImmersiveModeStyle == 0) {
+                    if (mImmersiveModeStyle == IMMERSIVE_MODE_OFF) {
                         mImmersiveModeConfirmation.onPowerKeyDown(isScreenOn, event.getDownTime(),
                                 isImmersiveMode(mLastSystemUiFlags));
                     }
@@ -5991,7 +5997,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         boolean oldImmersiveMode = isImmersiveMode(oldVis);
         boolean newImmersiveMode = isImmersiveMode(vis);
         if (win != null && oldImmersiveMode != newImmersiveMode) {
-            final String pkg = mImmersiveModeStyle != 0 ? "android" + mImmersiveModeStyle
+            final String pkg = mImmersiveModeStyle != IMMERSIVE_MODE_OFF ? "android" + mImmersiveModeStyle
                     : win.getOwningPackage();
             mImmersiveModeConfirmation.immersiveModeChanged(pkg, newImmersiveMode,
                     transientStatusBarAllowed);
