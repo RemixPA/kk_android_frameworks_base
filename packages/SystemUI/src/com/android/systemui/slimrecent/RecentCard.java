@@ -35,8 +35,10 @@ public class RecentCard extends Card {
     private RecentAppIcon mRecentIcon;
     private RecentExpandedCard mExpandedCard;
 
-    public RecentCard(Context context, TaskDescription td) {
-        this(context, R.layout.inner_base_main, td);
+    private int mPersistentTaskId;
+
+    public RecentCard(Context context, TaskDescription td, float scaleFactor) {
+        this(context, R.layout.inner_base_main, td, scaleFactor);
     }
 
     public RecentCard(Context context, int innerLayout, TaskDescription td) {
@@ -68,6 +70,8 @@ public class RecentCard extends Card {
         addCardHeader(mHeader);
         addCardThumbnail(mRecentIcon);
         addCardExpand(mExpandedCard);
+
+        mPersistentTaskId = td.persistentTaskId;
     }
 
     // Update content of our card. This is either called during construct
@@ -82,9 +86,13 @@ public class RecentCard extends Card {
                     td.resolveInfo, td.identifier, scaleFactor, td.getIsFavorite());
         }
         if (mExpandedCard != null) {
-            // Read flags and set accordingly initial expanded state.
-            final boolean isSystemExpanded =
-                    (td.getExpandedState() & RecentPanelView.EXPANDED_STATE_BY_SYSTEM) != 0;
+            // Set expanded state.
+            initExpandedState(td);
+            // Update app screenshot.
+            mExpandedCard.updateExpandedContent(td.persistentTaskId, td.getLabel(), scaleFactor);
+        }
+        mPersistentTaskId = td.persistentTaskId;
+    }
 
             final boolean isUserExpanded =
                     (td.getExpandedState() & RecentPanelView.EXPANDED_STATE_EXPANDED) != 0;
@@ -114,6 +122,10 @@ public class RecentCard extends Card {
     public void setupInnerViewElements(ViewGroup parent, View view) {
         // Nothing to do here.
         return;
+    }
+
+    public int getPersistentTaskId() {
+        return mPersistentTaskId;
     }
 
 }
