@@ -70,7 +70,11 @@
     <string name="quick_settings_location_mode_high_label">准确度高</string>
     <string name="quick_settings_location_mode_battery_label">耗电量低</string>
     <string name="quick_settings_location_mode_sensors_label">仅限设备</string>
-    <!-- Quick Settings Volume Tile -->
+    <!-- QuickSettings: Sound Tile  -->
+    <string name="quick_settings_ringer_mode_silent_label">静音</string>
+    <string name="quick_settings_ringer_mode_vibrate_label">震动</string>
+    <string name="quick_settings_ringer_mode_normal_label">铃声</string>
+    <string name="quick_settings_ringer_mode_normal_vibrate_label">铃声与震动</string>
     <string name="quick_settings_volume_label">音量</string>
     
     <!-- HALO -->
@@ -78,9 +82,18 @@
     <string name="halo_hide">隐藏</string>
     <string name="halo_clear_all">忽略所有通知</string>
     <string name="halo_silence">隐藏 &amp; 静音直到唤醒</string>
-    <string name="halo_tutorial1">我是HALO</string>
+    <string name="halo_tutorial1">HI! 我是HALO</string>
     <string name="halo_tutorial2">双击并拖动来移动我</string>
     <string name="halo_tutorial3">横向滑动来切换任务</string>
     <!-- Content description of the halo button in the notification panel for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
     <string name="accessibility_halo">创建halo通知</string>
+    
+    <!-- Pie controls -->
+    <string name="pie_date_format">yyyy年 MM月 dd日, ccc</string>
+    <string name="pie_hour_format_12">hh:mm</string>
+    <string name="pie_hour_format_24">HH:mm</string>
+    <string name="pie_am_pm">a</string>
+    <string name="enable_pie_control_title">Pie 手势操作</string>
+    <string name="enable_pie_control_message">是否在全屏模式下使用Pie手势操作?</string>
+    <string name="pie_state">@string/enable_pie_control_title</string>
 </resources>

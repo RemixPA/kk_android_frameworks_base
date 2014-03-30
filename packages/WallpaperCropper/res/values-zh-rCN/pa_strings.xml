@@ -14,12 +14,13 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="pick_lockscreen">锁屏</string>
+    <string name="pick_lockscreen">锁屏壁纸</string>
     <string name="lockscreen_reset">重置</string>
     <string name="lockscreen_select">浏览</string>
-    <string name="lockscreen_blur">柔化</string>
-    <string name="blur_radius">柔化半径</string>
-    <string name="lockscreen_instructions">设置锁屏壁纸</string>
-    <string name="lockscreen_image_set">锁屏壁纸已更新</string>
-    <string name="lockscreen_image_reset">锁屏壁纸</string>
+    <string name="lockscreen_blur">模糊</string>
+    <string name="blur_radius">模糊程度</string>
+    <string name="lockscreen_instructions">设置锁屏图片</string>
+    <string name="lockscreen_image_set">已设置</string>
+    <string name="lockscreen_image_reset">已重置</string>
 </resources>
+
