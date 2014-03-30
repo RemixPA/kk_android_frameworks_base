@@ -343,7 +343,7 @@ class QuickSettings {
 
     private boolean immsersiveStyleSelected() {
         int selection = Settings.System.getInt(mContext.getContentResolver(),
-                            Settings.System.PIE_STATE, 0);
+                            Settings.System.PIE_MODE, 0);
         return selection == 1 || selection == 2;
     }
 
@@ -914,6 +914,7 @@ class QuickSettings {
                             } else {
                                 mModel.switchImmersiveGlobal();
                                 mModel.refreshImmersiveGlobalTile();
+                                collapsePanels();
                             }
                         }
                     });
