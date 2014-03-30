@@ -30,5 +30,5 @@
     <bool name="config_disableMenuKeyInLockScreen">false</bool>
 
     <!-- Disable Lockscreen Notifications dynamic width by default -->
-    <bool name="config_lnDynamicWidth">false</bool>
+    <bool name="config_lnDynamicWidth">true</bool>
 </resources>
