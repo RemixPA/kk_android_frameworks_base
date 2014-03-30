@@ -133,6 +133,7 @@ public class KeyguardViewManager {
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_NOTIFICATIONS), false, this);
+            updateSettings();
         }
 
         @Override
@@ -142,7 +143,6 @@ public class KeyguardViewManager {
     }
 
     private void updateSettings() {
-        Log.e("xifan", "================== updating keyguarviewmanager");
         mLockscreenNotifications = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.LOCKSCREEN_NOTIFICATIONS, mLockscreenNotifications ? 1 : 0) == 1;
         if(mLockscreenNotifications && mNotificationViewManager == null) {
@@ -166,7 +166,7 @@ public class KeyguardViewManager {
         mViewManager = viewManager;
         mViewMediatorCallback = callback;
         mLockPatternUtils = lockPatternUtils;
-        updateSettings();
+        new SettingsObserver(new Handler()).observe();
     }
 
     /**
