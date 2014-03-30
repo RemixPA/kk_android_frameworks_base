@@ -320,6 +320,8 @@ public class NotificationHostView extends FrameLayout {
                 bringToFront();
             } catch (RemoteException e) {
                 Log.e(TAG, "Failed to get active notifications!");
+            } catch (SecurityException se) {
+                Log.e(TAG, "Failed to get active notifications due to security!");
             }
         }
     }
