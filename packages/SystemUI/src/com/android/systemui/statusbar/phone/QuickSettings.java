@@ -909,13 +909,14 @@ class QuickSettings {
                     immersiveTile.setFrontOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if (!immsersiveStyleSelected() && mModel.getImmersiveMode() == 0) {
+                            final boolean needOn = mModel.getImmersiveMode() == 0;
+                            if (!immsersiveStyleSelected() && needOn)
                                 selectImmersiveStyle();
-                            } else {
-                                mModel.switchImmersiveGlobal();
-                                mModel.refreshImmersiveGlobalTile();
+                            mModel.switchImmersiveGlobal();
+                            mModel.refreshImmersiveGlobalTile();
+
+                            if (!needOn)
                                 collapsePanels();
-                            }
                         }
                     });
                     mModel.addImmersiveGlobalTile(immersiveTile.getFront(),
