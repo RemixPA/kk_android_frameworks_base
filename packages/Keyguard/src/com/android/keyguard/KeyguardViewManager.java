@@ -468,6 +468,8 @@ public class KeyguardViewManager {
             mNotificationViewManager.setHostView(mNotificationView);
             mNotificationViewManager.onScreenTurnedOff();
             mNotificationView.addNotifications();
+        } else {
+            mNotificationView = null;
         }
 
         // HACK
