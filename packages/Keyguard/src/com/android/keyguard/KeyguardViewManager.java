@@ -144,7 +144,7 @@ public class KeyguardViewManager {
 
     private void updateSettings() {
         mLockscreenNotifications = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.LOCKSCREEN_NOTIFICATIONS, mLockscreenNotifications ? 1 : 0) == 1;
+                Settings.System.LOCKSCREEN_NOTIFICATIONS, 0) == 1;
         if(mLockscreenNotifications && mNotificationViewManager == null) {
             mNotificationViewManager = new NotificationViewManager(mContext, this);
         } else if(!mLockscreenNotifications && mNotificationViewManager != null) {
