@@ -49,6 +49,11 @@ public class RecentExpandedCard extends CardExpand {
 
     private int mPersistentTaskId = -1;
     private String mLabel;
+    private int mThumbnailWidth;
+    private int mThumbnailHeight;
+    private int mBottomPadding;
+    private float mScaleFactor;
+    private boolean mScaleFactorChanged;
 
     private BitmapDownloaderTask mTask;
 
@@ -87,12 +92,19 @@ public class RecentExpandedCard extends CardExpand {
         mReload = true;
     }
 
-    // Internal state if we are expanded or not.
-    // Used to reduce loading on second loading stage
-    // and to force later on third loading stage
-    // to load the actual needed thumbnail.
-    public void isExpanded(boolean isExpanded) {
-        mIsExpanded = isExpanded;
+    // Setup main dimensions we need.
+    private void initDimensions() {
+        final Resources res = mContext.getResources();
+        // Render the default thumbnail background
+        mThumbnailWidth = (int) (res.getDimensionPixelSize(
+                R.dimen.recent_thumbnail_width) * mScaleFactor);
+        mThumbnailHeight = (int) (res.getDimensionPixelSize(
+                R.dimen.recent_thumbnail_height) * mScaleFactor);
+        mBottomPadding = (int) (res.getDimensionPixelSize(
+                R.dimen.recent_thumbnail_bottom_padding) * mScaleFactor);
+
+        mDefaultThumbnailBackground = new ColorDrawableWithDimensions(
+                res.getColor(R.color.card_backgroundExpand), mThumbnailWidth, mThumbnailHeight);
     }
 
     @Override
@@ -112,6 +124,16 @@ public class RecentExpandedCard extends CardExpand {
         if (holder == null) {
             holder = new ViewHolder();
             holder.thumbnailView = (RecentImageView) view.findViewById(R.id.thumbnail);
+            // Take scale factor into account if it is different then default or it has changed.
+            if (mScaleFactor != RecentController.DEFAULT_SCALE_FACTOR || mScaleFactorChanged) {
+                mScaleFactorChanged = false;
+                final ViewGroup.MarginLayoutParams layoutParams =
+                        (ViewGroup.MarginLayoutParams) holder.thumbnailView.getLayoutParams();
+                layoutParams.width = mThumbnailWidth;
+                layoutParams.height = mThumbnailHeight;
+                layoutParams.setMargins(0, 0, 0, mBottomPadding);
+                holder.thumbnailView.setLayoutParams(layoutParams);
+            }
             view.setTag(holder);
         }
 

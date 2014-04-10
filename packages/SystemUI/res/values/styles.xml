@@ -220,7 +220,16 @@
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:clickable">true</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_marginRight">0dp</item>
+        <item name="android:layout_marginEnd">0dp</item>
+    </style>
+
+    <style name="card.main_contentExpand_inside">
+        <item name="android:background">@color/card_backgroundExpand</item>
+        <item name="android:padding">@dimen/card_expand_layout_padding</item>
+    </style>
+
+    <style name="RecentBaseStyle"  parent="@*android:style/Theme.Holo.Light">
+        <item name="android:popupMenuStyle">@*android:style/Widget.Holo.Light.ListPopupWindow</item>
     </style>
 
 </resources>
