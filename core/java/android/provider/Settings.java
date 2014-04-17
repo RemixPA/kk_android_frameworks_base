@@ -2035,6 +2035,48 @@ public final class Settings {
         public static final String VOLUME_LINK_NOTIFICATION = "volume_link_notification";
 
         /**
+         * Enable looking up of phone numbers of nearby places
+         *
+         * @hide
+         */
+        public static final String ENABLE_FORWARD_LOOKUP = "enable_forward_lookup";
+
+        /**
+         * Enable looking up of phone numbers of people
+         *
+         * @hide
+         */
+        public static final String ENABLE_PEOPLE_LOOKUP = "enable_people_lookup";
+
+        /**
+         * Enable looking up of information of phone numbers not in the contacts
+         *
+         * @hide
+         */
+        public static final String ENABLE_REVERSE_LOOKUP = "enable_reverse_lookup";
+
+        /**
+         * The forward lookup provider
+         *
+         * @hide
+         */
+        public static final String FORWARD_LOOKUP_PROVIDER = "forward_lookup_provider";
+
+        /**
+         * The people lookup provider
+         *
+         * @hide
+         */
+        public static final String PEOPLE_LOOKUP_PROVIDER = "people_lookup_provider";
+
+        /**
+         * The reverse lookup provider
+         *
+         * @hide
+         */
+        public static final String REVERSE_LOOKUP_PROVIDER = "reverse_lookup_provider";
+
+        /**
          * Whether silent mode should allow vibration feedback. This is used
          * internally in AudioService and the Sound settings activity to
          * coordinate decoupling of vibrate and silent modes. This setting
@@ -2463,48 +2505,6 @@ public final class Settings {
          * @hide
          */
         public static final String BATTERY_LIGHT_FULL_COLOR = "battery_light_full_color";
-
-        /**
-         * Enable looking up of phone numbers of nearby places
-         *
-         * @hide
-         */
-        public static final String ENABLE_FORWARD_LOOKUP = "enable_forward_lookup";
-
-        /**
-         * Enable looking up of phone numbers of people
-         *
-         * @hide
-         */
-        public static final String ENABLE_PEOPLE_LOOKUP = "enable_people_lookup";
-
-        /**
-         * Enable looking up of information of phone numbers not in the contacts
-         *
-         * @hide
-         */
-        public static final String ENABLE_REVERSE_LOOKUP = "enable_reverse_lookup";
-
-        /**
-         * The forward lookup provider
-         *
-         * @hide
-         */
-        public static final String FORWARD_LOOKUP_PROVIDER = "forward_lookup_provider";
-
-        /**
-         * The people lookup provider
-         *
-         * @hide
-         */
-        public static final String PEOPLE_LOOKUP_PROVIDER = "people_lookup_provider";
-
-        /**
-         * The reverse lookup provider
-         *
-         * @hide
-         */
-        public static final String REVERSE_LOOKUP_PROVIDER = "reverse_lookup_provider";
 
         /**
          * Show pointer location on screen?
@@ -3003,16 +3003,52 @@ public final class Settings {
         public static final String SCREEN_RECORDER_BITRATE = "screen_recorder_bitrate";
 
         /**
+         * Whether to include audio when recording a video
+         * @hide
+         */
+        public static final String SCREEN_RECORDER_RECORD_AUDIO = "screen_recorder_record_audio";
+
+        /**
          * Weather to minimize lockscreen challenge on screen turned on
          * @hide
          */
         public static final String LOCKSCREEN_MAXIMIZE_WIDGETS = "lockscreen_maximize_widgets";
 
         /**
-         * Whether to include audio when recording a video
+         * Pie control panel. Meet him on the spot.
+         * 0 = off
+         * 1 = on
+         * Changes aspect depends on status bar visibility.
          * @hide
          */
-        public static final String SCREEN_RECORDER_RECORD_AUDIO = "screen_recorder_record_audio";
+        public static final String PIE_STATE = "pie_state";
+
+        /**
+         * Used by Phone Window Manager to tell PIE which mode to use
+         * depending on whether nav/statusbar is hidden
+         * 0 = off
+         * 1 = simple
+         * 2 = full
+         * @hide
+         */
+        public static final String PIE_MODE = "pie_mode";
+
+        /**
+         * Location of the pie in the screen
+         * 0 = Gravity.BOTTOM (default)
+         * 1 = Gravity.LEFT
+         * 2 = Gravity.RIGHT
+         * @hide
+         */
+        public static final String PIE_GRAVITY = "pie_gravity";
+
+        /**
+         * Whether to show alternative recent clear all button on recent panel top right corner:
+         * - navbar is not enabled/present
+         * - pie immersive is disabled and not showing
+         * @hide
+         */
+        public static final String ALTERNATIVE_RECENTS_CLEAR_ALL = "alternative_recents_clear_all";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
@@ -3091,7 +3127,8 @@ public final class Settings {
          */
         public static final String[] SETTINGS_TO_RESET = {
             QUICK_SETTINGS_QUICK_PULL_DOWN,
-            SAFE_HEADSET_VOLUME
+            SAFE_HEADSET_VOLUME,
+            PIE_STATE
         };
 
         // Settings moved to Settings.Secure
@@ -6599,6 +6636,13 @@ public final class Settings {
          * @hide
          */
         public static final String LOW_BATTERY_SOUND_TIMEOUT = "low_battery_sound_timeout";
+
+        /**
+         * Enable the QuickBoot feature
+         *
+         * @hide
+         */
+        public static final String ENABLE_QUICKBOOT = "enable_quickboot";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings

@@ -643,6 +643,13 @@ public class NetworkController extends BroadcastReceiver implements DemoMode {
                                 R.string.accessibility_data_connection_3g);
                     }
                     break;
+                case TelephonyManager.NETWORK_TYPE_DCHSPAP:
+                    mDataIconList = TelephonyIcons.DATA_DC[mInetCondition];
+                    mDataTypeIconId = R.drawable.stat_sys_data_fully_connected_dc;
+                    mQSDataTypeIconId = TelephonyIcons.QS_DATA_DC[mInetCondition];
+                    mContentDescriptionDataType = mContext.getString(
+                            R.string.accessibility_data_connection_DC);
+                    break;
                 case TelephonyManager.NETWORK_TYPE_CDMA:
                     if (!mShowAtLeastThreeGees) {
                         // display 1xRTT for IS95A/B
@@ -876,7 +883,7 @@ public class NetworkController extends BroadcastReceiver implements DemoMode {
                     info = mWifiManager.getConnectionInfo();
                 }
                 if (info != null) {
-                    mWifiSsid = huntForSsid(info);
+                    mWifiSsid = huntForSsid(mWifiManager, info);
                 } else {
                     mWifiSsid = null;
                 }
@@ -910,13 +917,13 @@ public class NetworkController extends BroadcastReceiver implements DemoMode {
         }
     }
 
-    private String huntForSsid(WifiInfo info) {
+    public static String huntForSsid(WifiManager manager, WifiInfo info) {
         String ssid = info.getSSID();
         if (ssid != null) {
             return ssid;
         }
         // OK, it's not in the connectionInfo; we have to go hunting for it
-        List<WifiConfiguration> networks = mWifiManager.getConfiguredNetworks();
+        List<WifiConfiguration> networks = manager.getConfiguredNetworks();
         for (WifiConfiguration net : networks) {
             if (net.networkId == info.getNetworkId()) {
                 return net.SSID;
