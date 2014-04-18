@@ -498,7 +498,6 @@ public abstract class BaseStatusBar extends SystemUI implements
         int gravity = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.PIE_GRAVITY, 0);
         mPieController.resetPie(!reset, gravity);
->>>>>>> FETCH_HEAD
     }
 
     public void userSwitched(int newUserId) {
@@ -747,7 +746,7 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     protected void toggleRecentsActivity() {
         if (mRecents != null) {
-            mRecents.toggleRecents(mDisplay, mLayoutDirection, getStatusBarView(), mImmersiveModeStyle);
+            mRecents.toggleRecents(mDisplay, mLayoutDirection, getStatusBarView());
         }
     }
 
