@@ -3937,6 +3937,12 @@ public final class Settings {
         public static final String ANDROID_ID = "android_id";
 
         /**
+         * The hostname for this device
+         * @hide
+         */
+        public static final String DEVICE_HOSTNAME = "device_hostname";
+
+        /**
          * @deprecated Use {@link android.provider.Settings.Global#BLUETOOTH_ON} instead
          */
         @Deprecated
