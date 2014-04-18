@@ -94,28 +94,21 @@ public class RecentCard extends Card {
         mPersistentTaskId = td.persistentTaskId;
     }
 
-            final boolean isUserExpanded =
-                    (td.getExpandedState() & RecentPanelView.EXPANDED_STATE_EXPANDED) != 0;
+    // Set initial expanded state of our card.
+    private void initExpandedState(TaskDescription td) {
+        // Read flags and set accordingly initial expanded state.
+        final boolean isSystemExpanded =
+                (td.getExpandedState() & RecentPanelView.EXPANDED_STATE_BY_SYSTEM) != 0;
 
-            final boolean isUserCollapsed =
-                    (td.getExpandedState() & RecentPanelView.EXPANDED_STATE_COLLAPSED) != 0;
+        final boolean isUserExpanded =
+                (td.getExpandedState() & RecentPanelView.EXPANDED_STATE_EXPANDED) != 0;
 
-            final boolean isExpanded = (isSystemExpanded && !isUserCollapsed) || isUserExpanded;
+        final boolean isUserCollapsed =
+                (td.getExpandedState() & RecentPanelView.EXPANDED_STATE_COLLAPSED) != 0;
 
-            // Set or update app screenshot
-            mExpandedCard.updateExpandedContent(td.persistentTaskId, td.getLabel());
-            // Set internal state
-            mExpandedCard.isExpanded(isExpanded);
-            setExpanded(isExpanded);
-        }
-    }
+        final boolean isExpanded = (isSystemExpanded && !isUserCollapsed) || isUserExpanded;
 
-    // Prepare forceload of task thumbnails which were not
-    // loaded till now or are not in our LRU cache.
-    public void forceSetLoadExpandedContent() {
-        if (mExpandedCard != null) {
-            mExpandedCard.isExpanded(true);
-        }
+        setExpanded(isExpanded);
     }
 
     @Override
