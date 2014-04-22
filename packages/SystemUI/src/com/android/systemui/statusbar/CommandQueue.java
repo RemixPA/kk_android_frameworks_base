@@ -101,6 +101,7 @@ public class CommandQueue extends IStatusBar.Stub {
         public void hideSearchPanel();
         public void toggleLastApp();
         public void cancelPreloadRecentApps();
+        public void toggleOrientationListener(boolean enable);
         public void setWindowState(int window, int state);
     }
 
@@ -234,6 +235,10 @@ public class CommandQueue extends IStatusBar.Stub {
             mHandler.removeMessages(MSG_TOGGLE_LAST_APP);
             mHandler.obtainMessage(MSG_TOGGLE_LAST_APP, 0, 0, null).sendToTarget();
         }
+    }
+
+    public void toggleOrientationListener(boolean enable) {
+        mCallbacks.toggleOrientationListener(enable);
     }
 
     public void setWindowState(int window, int state) {
