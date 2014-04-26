@@ -27,6 +27,7 @@
     <!-- Quick pulldown confirmation dialog -->
     <string name="quick_settings_quick_pull_down_title">快速下拉</string>
     <string name="quick_settings_quick_pull_down_message">是否设置状态栏右侧下拉为显示快速设置面板？</string>
+
     <!-- QuickSettings: Immersive mode [CHAR LIMIT=NONE] -->
     <string name="quick_settings_immersive_global_on_label">全屏模式</string>
     <string name="quick_settings_immersive_global_off_label">全屏模式 关</string>
@@ -76,6 +77,11 @@
     <string name="quick_settings_ringer_mode_normal_label">铃声</string>
     <string name="quick_settings_ringer_mode_normal_vibrate_label">铃声与震动</string>
     <string name="quick_settings_volume_label">音量</string>
+
+    <!-- Clear recents confirmation dialog -->
+    <string name="navbar_recents_clear_all_title">Clear all</string>
+    <string name="navbar_recents_clear_all_message">Would you like the "recents button" to clear all apps?</string>
+    <string name="navbar_recents_clear_all">@string/navbar_recents_clear_all_title</string>
     
     <!-- HALO -->
     <string name="halo_dismiss">忽略通知</string>
@@ -92,8 +98,6 @@
     <string name="pie_date_format">yyyy年 MM月 dd日, ccc</string>
     <string name="pie_hour_format_12">hh:mm</string>
     <string name="pie_hour_format_24">HH:mm</string>
-    <string name="pie_am_pm">a</string>
     <string name="enable_pie_control_title">Pie 手势操作</string>
     <string name="enable_pie_control_message">是否在全屏模式下使用Pie手势操作?</string>
-    <string name="pie_state">@string/enable_pie_control_title</string>
 </resources>

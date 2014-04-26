@@ -88,7 +88,13 @@
     <string name="quick_settings_quick_pull_down_title">Quick pull down</string>
     <string name="quick_settings_quick_pull_down_message">Would you like the edge of the status bar to pull down quick settings?</string>
 
+    <!-- Clear recents confirmation dialog -->
+    <string name="navbar_recents_clear_all_title">Clear all</string>
+    <string name="navbar_recents_clear_all_message">Would you like the "recents button" to clear all apps?</string>
+    <string name="navbar_recents_clear_all">@string/navbar_recents_clear_all_title</string>
+
     <!-- Pie controls -->
+    <string name="pie_state">@string/enable_pie_control_title</string>
     <string name="pie_date_format">ccc, dd MMM yyyy</string>
     <string name="pie_hour_format_12">hh:mm</string>
     <string name="pie_hour_format_24">HH:mm</string>
@@ -110,4 +116,5 @@
     <string name="halo_tutorial3">Browse tasks: Horizontal drag</string>
     <!-- Content description of the halo button in the notification panel for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
     <string name="accessibility_halo">Create notification halo.</string>
+    
 </resources>
