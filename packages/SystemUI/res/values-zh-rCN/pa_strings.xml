@@ -79,20 +79,8 @@
     <string name="quick_settings_volume_label">音量</string>
 
     <!-- Clear recents confirmation dialog -->
-    <string name="navbar_recents_clear_all_title">Clear all</string>
-    <string name="navbar_recents_clear_all_message">Would you like the "recents button" to clear all apps?</string>
-    <string name="navbar_recents_clear_all">@string/navbar_recents_clear_all_title</string>
-    
-    <!-- HALO -->
-    <string name="halo_dismiss">忽略通知</string>
-    <string name="halo_hide">隐藏</string>
-    <string name="halo_clear_all">忽略所有通知</string>
-    <string name="halo_silence">隐藏 &amp; 静音直到唤醒</string>
-    <string name="halo_tutorial1">HI! 我是HALO</string>
-    <string name="halo_tutorial2">双击并拖动来移动我</string>
-    <string name="halo_tutorial3">横向滑动来切换任务</string>
-    <!-- Content description of the halo button in the notification panel for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
-    <string name="accessibility_halo">创建halo通知</string>
+    <string name="navbar_recents_clear_all_title">清除所有</string>
+    <string name="navbar_recents_clear_all_message">是否使用最近任务按钮来清除应用？</string>
     
     <!-- Pie controls -->
     <string name="pie_date_format">yyyy年 MM月 dd日, ccc</string>
