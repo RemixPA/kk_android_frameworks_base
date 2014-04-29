@@ -79,13 +79,17 @@
     <string name="quick_settings_volume_label">音量</string>
 
     <!-- Clear recents confirmation dialog -->
-    <string name="navbar_recents_clear_all_title">清除所有</string>
+    <string name="navbar_recents_clear_all_title">全部清除</string>
     <string name="navbar_recents_clear_all_message">是否使用最近任务按钮来清除应用？</string>
-    
+
     <!-- Pie controls -->
     <string name="pie_date_format">yyyy年 MM月 dd日, ccc</string>
     <string name="pie_hour_format_12">hh:mm</string>
     <string name="pie_hour_format_24">HH:mm</string>
     <string name="enable_pie_control_title">Pie 手势操作</string>
     <string name="enable_pie_control_message">是否在全屏模式下使用Pie手势操作?</string>
+
+    <!-- Switch apps -->
+    <string name="enable_switch_apps_title">切换应用</string>
+    <string name="enable_switch_apps_message">是否启用长按最近任务键快速启动上一个应用?</string>
 </resources>
