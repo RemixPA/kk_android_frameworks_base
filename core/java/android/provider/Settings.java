@@ -3066,14 +3066,6 @@ public final class Settings {
         public static final String LOCKSCREEN_MAXIMIZE_WIDGETS = "lockscreen_maximize_widgets";
 
         /**
-         * Recents longpress switchs apps.
-         * 0 = off
-         * 1 = on
-         * @hide
-         */
-        public static final String RECENTS_SWITCH = "recents_switch";
-
-        /**
          * Pie control panel. Meet him on the spot.
          * 0 = off
          * 1 = on
@@ -3220,8 +3212,7 @@ public final class Settings {
             QUICK_SETTINGS_QUICK_PULL_DOWN,
             SAFE_HEADSET_VOLUME,
             PIE_STATE,
-            NAVBAR_RECENTS_CLEAR_ALL,
-            RECENTS_SWITCH
+            NAVBAR_RECENTS_CLEAR_ALL
         };
 
         // Settings moved to Settings.Secure
