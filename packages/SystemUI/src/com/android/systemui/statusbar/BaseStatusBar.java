@@ -681,6 +681,50 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     protected abstract View getStatusBarView();
 
+    protected boolean mSwitchingApp = false;
+    private RecentTasksLoader mRecentTasksLoader;
+    protected int mSwitchLastAppHoldoff = 200;
+    private Runnable mSwitchLastApp = new Runnable() {
+        public void run() {
+            int selection = Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.RECENTS_SWITCH, 0);
+            int clearAllSelection = Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.NAVBAR_RECENTS_CLEAR_ALL, 0);
+            if (clearAllSelection != 0 && clearAllSelection != 3 && (selection == 0 || selection == 3)) {
+                selectSwitchApps();
+            } else {
+                boolean switchApps = selection == 1;
+                if (!switchApps) {
+                    toggleRecentsActivity();
+                } else {
+                    mSwitchingApp = true;
+                    if (mRecentTasksLoader == null) {
+                        mRecentTasksLoader = RecentTasksLoader.getInstance(mContext);
+                    }
+                    TaskDescription task = mRecentTasksLoader.getFirstTask(true);
+                    if (task != null) {
+                        Intent intent = task.getIntent();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(intent);
+                    } else {
+                        toggleRecentsActivity();
+                    }
+                }
+            }
+        }
+    };
+
+    private void selectSwitchApps() {
+        Resources r = mContext.getResources();
+
+        SettingConfirmationHelper.showConfirmationDialogForSetting(
+                mContext,
+                r.getString(R.string.enable_switch_apps_title),
+                r.getString(R.string.enable_switch_apps_message),
+                r.getDrawable(R.drawable.switch_apps),
+                Settings.System.RECENTS_SWITCH);
+    }
+
     protected View.OnTouchListener mRecentsPreloadOnTouchListener = new View.OnTouchListener() {
         // additional optimization when we have software system buttons - start loading the recent
         // tasks on touch down
