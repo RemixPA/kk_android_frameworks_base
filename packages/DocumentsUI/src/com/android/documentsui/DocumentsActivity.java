@@ -1087,7 +1087,9 @@ public class DocumentsActivity extends Activity {
                 startActivity(view);
             } catch (ActivityNotFoundException ex2) {
                 File file = null;
-                String id = doc.documentId.substring(0, doc.documentId.indexOf(":"));
+                final int split = doc.documentId.indexOf(":");
+                String id = doc.documentId.substring(0, split > 0 ?
+                        split : doc.documentId.length());
                 File volume = mIdToPath.get(id);
                 if (volume != null) {
                     String fileName = doc.documentId.substring(doc.documentId.indexOf(":") + 1);
