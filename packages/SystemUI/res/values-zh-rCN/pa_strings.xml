@@ -78,6 +78,12 @@
     <string name="quick_settings_ringer_mode_normal_vibrate_label">铃声与震动</string>
     <string name="quick_settings_volume_label">音量</string>
 
+    <!-- Title shown in notification popup for launching notification in floating mode -->
+    <string name="status_bar_notification_floating_item_title">悬浮模式</string>
+
+    <!-- Title shown in recents popup for showing app in floating mode -->
+    <string name="status_bar_recent_floating_item_title">@string/status_bar_notification_floating_item_title</string>
+
     <!-- Clear recents confirmation dialog -->
     <string name="navbar_recents_clear_all_title">全部清除</string>
     <string name="navbar_recents_clear_all_message">是否使用最近任务按钮来清除应用？</string>
@@ -89,6 +95,4 @@
     <string name="enable_pie_control_title">Pie 手势操作</string>
     <string name="enable_pie_control_message">是否在全屏模式下使用Pie手势操作?</string>
     
-    <!-- Title shown in recents popup for showing app in floating mode -->
-    <string name="status_bar_recent_floating_item_title">悬浮模式</string>
 </resources>

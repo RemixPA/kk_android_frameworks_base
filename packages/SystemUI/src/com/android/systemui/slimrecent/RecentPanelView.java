@@ -81,6 +81,7 @@ public class RecentPanelView {
     private static final int MENU_APP_DETAILS_ID   = 0;
     private static final int MENU_APP_PLAYSTORE_ID = 1;
     private static final int MENU_APP_AMAZON_ID    = 2;
+    private static final int MENU_FLOATING_MODE    = 3;
 
     private static final String PLAYSTORE_REFERENCE = "com.android.vending";
     private static final String AMAZON_REFERENCE    = "com.amazon.venezia";
@@ -183,7 +184,7 @@ public class RecentPanelView {
             public boolean onLongClick(Card card, View view) {
                 constructMenu(
                         (ImageButton) view.findViewById(R.id.card_header_button_expand),
-                        td.packageName);
+                        td);
                 return true;
             }
         });
@@ -272,7 +273,7 @@ public class RecentPanelView {
     /**
      * Construct popup menu for longpress.
      */
-    private void constructMenu(final View selectedView, final String packageName) {
+    private void constructMenu(final View selectedView, final TaskDescription td) {
         if (selectedView == null) {
             return;
         }
@@ -289,12 +290,14 @@ public class RecentPanelView {
         // Add app detail menu entry.
         popup.getMenu().add(0, MENU_APP_DETAILS_ID, 0,
                 mContext.getResources().getString(R.string.status_bar_recent_inspect_item_title));
+        popup.getMenu().add(0, MENU_FLOATING_MODE, 0,
+                mContext.getResources().getString(R.string.status_bar_recent_floating_item_title));
 
         // Add playstore or amazon entry if it is provided by the application.
-        if (checkAppInstaller(packageName, PLAYSTORE_REFERENCE)) {
+        if (checkAppInstaller(td.packageName, PLAYSTORE_REFERENCE)) {
             popup.getMenu().add(0, MENU_APP_PLAYSTORE_ID, 0,
                     getApplicationLabel(PLAYSTORE_REFERENCE));
-        } else if (checkAppInstaller(packageName, AMAZON_REFERENCE)) {
+        } else if (checkAppInstaller(td.packageName, AMAZON_REFERENCE)) {
             popup.getMenu().add(0, MENU_APP_AMAZON_ID, 0,
                     getApplicationLabel(AMAZON_REFERENCE));
         }
@@ -303,13 +306,19 @@ public class RecentPanelView {
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == MENU_APP_DETAILS_ID) {
-                    startApplicationDetailsActivity(packageName, null, null);
+                    startApplicationDetailsActivity(td.packageName, null, null);
                 } else if (item.getItemId() == MENU_APP_PLAYSTORE_ID) {
                     startApplicationDetailsActivity(null,
-                            PLAYSTORE_APP_URI_QUERY + packageName, PLAYSTORE_REFERENCE);
+                            PLAYSTORE_APP_URI_QUERY + td.packageName, PLAYSTORE_REFERENCE);
                 } else if (item.getItemId() == MENU_APP_AMAZON_ID) {
                     startApplicationDetailsActivity(null,
-                            AMAZON_APP_URI_QUERY + packageName, AMAZON_REFERENCE);
+                            AMAZON_APP_URI_QUERY + td.packageName, AMAZON_REFERENCE);
+                } else if (item.getItemId() == MENU_FLOATING_MODE) {
+                    Intent intent = td.intent;
+                    intent.addFlags(Intent.FLAG_FLOATING_WINDOW
+                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    dismissPopup();
+                    mContext.startActivity(intent);
                 }
                 return true;
             }
