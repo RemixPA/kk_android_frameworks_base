@@ -317,8 +317,8 @@ public class RecentPanelView {
                     Intent intent = td.intent;
                     intent.addFlags(Intent.FLAG_FLOATING_WINDOW
                             | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    dismissPopup();
                     mContext.startActivity(intent);
+                    mController.closeRecents();
                 }
                 return true;
             }
