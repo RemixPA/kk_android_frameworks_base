@@ -88,4 +88,7 @@
     <string name="pie_hour_format_24">HH:mm</string>
     <string name="enable_pie_control_title">Pie 手势操作</string>
     <string name="enable_pie_control_message">是否在全屏模式下使用Pie手势操作?</string>
+    
+    <!-- Title shown in recents popup for showing app in floating mode -->
+    <string name="status_bar_recent_floating_item_title">悬浮模式</string>
 </resources>
