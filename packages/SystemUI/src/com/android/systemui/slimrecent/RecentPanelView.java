@@ -315,8 +315,8 @@ public class RecentPanelView {
                             AMAZON_APP_URI_QUERY + td.packageName, AMAZON_REFERENCE);
                 } else if (item.getItemId() == MENU_FLOATING_MODE) {
                     Intent intent = td.intent;
-                    intent.addFlags(Intent.FLAG_FLOATING_WINDOW
-                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.setFlags(Intent.FLAG_FLOATING_WINDOW
+                            | Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
                     mController.closeRecents();
                 }
