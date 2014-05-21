@@ -90,8 +90,6 @@
 
     <!-- Pie controls -->
     <string name="pie_date_format">yyyy年 MM月 dd日, ccc</string>
-    <string name="pie_hour_format_12">hh:mm</string>
-    <string name="pie_hour_format_24">HH:mm</string>
     <string name="enable_pie_control_title">Pie 手势操作</string>
     <string name="enable_pie_control_message">是否在全屏模式下使用Pie手势操作?</string>
     
