@@ -28,7 +28,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.ContentObserver;
-import android.graphics.Bitmap;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -39,6 +38,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.os.UserHandle;
+import android.provider.Settings;
 import android.text.format.DateUtils;
 import android.util.FloatMath;
 import android.util.Slog;
@@ -366,22 +367,6 @@ final class DisplayPowerController {
     private boolean mTwilightChanged;
     private boolean mAutoBrightnessSettingsChanged;
 
-    private KeyguardServiceWrapper mKeyguardService;
-
-    private final ServiceConnection mKeyguardConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            mKeyguardService = new KeyguardServiceWrapper(
-                    IKeyguardService.Stub.asInterface(service));
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mKeyguardService = null;
-        }
-
-    };
-
     // Screen-off animation
     private static final int SCREEN_OFF_FADE = 0;
     private static final int SCREEN_OFF_CRT = 1;
@@ -396,6 +381,7 @@ final class DisplayPowerController {
             DisplayManagerService displayManager,
             SuspendBlocker displaySuspendBlocker, DisplayBlanker displayBlanker,
             Callbacks callbacks, Handler callbackHandler) {
+        mContext = context;
         mHandler = new DisplayControllerHandler(looper);
         mNotifier = notifier;
         mDisplaySuspendBlocker = displaySuspendBlocker;

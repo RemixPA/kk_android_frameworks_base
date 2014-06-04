@@ -2881,13 +2881,6 @@ public final class Settings {
          public static final String PACKAGE_INSTALLER_QUICK_MODE_ENABLED = "package_installer_quick_mode_enabled";
 
         /**
-         * Allows to show the background activity back the lockscreen
-         * Show the content behind the lockscreen
-         * @hide
-         */
-        public static final String LOCKSCREEN_SEE_THROUGH = "lockscreen_see_through";
-
-        /**
          * Enables/disables lockscreen notifications
          * @hide
          */

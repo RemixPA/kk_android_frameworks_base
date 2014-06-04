@@ -1580,19 +1580,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     Settings.System.CAMERA_MUSIC_CONTROLS, 1, UserHandle.USER_CURRENT) == 1)
                     && !mCameraWakeScreen);
 
-            final boolean useEdgeService = Settings.System.getIntForUser(resolver,
-                    Settings.System.USE_EDGE_SERVICE_FOR_GESTURES, 0, UserHandle.USER_CURRENT) == 1;
-            if (useEdgeService ^ mUsingEdgeGestureServiceForGestures && mSystemReady) {
-                if (!mUsingEdgeGestureServiceForGestures && useEdgeService) {
-                    mUsingEdgeGestureServiceForGestures = true;
-                    mWindowManagerFuncs.unregisterPointerEventListener(mSystemGestures);
-                } else if (mUsingEdgeGestureServiceForGestures && !useEdgeService) {
-                    mUsingEdgeGestureServiceForGestures = false;
-                    mWindowManagerFuncs.registerPointerEventListener(mSystemGestures);
-                }
-                updateEdgeGestureListenerState();
-            }
-
             boolean devForceNavbar = Settings.System.getIntForUser(resolver,
                     Settings.System.DEV_FORCE_SHOW_NAVBAR, 0, UserHandle.USER_CURRENT) == 1;
             if (devForceNavbar != mDevForceNavbar) {
@@ -3392,11 +3379,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                         mStatusBar.isVisibleLw() && ((mLastSystemUiFlags & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0);
                 boolean mAllowPieOverride = !mHasNavigationBar && !mDevForceNavbar;
                 boolean mAlternativeClearAll = !mAllowPieOverride ? isNavBarImmersive : immersiveModeHidesNavigationBar();
-                // define pie's state and/or style
-                Settings.System.putInt(mContext.getContentResolver(), Settings.System.PIE_MODE,
-                        ((!mAllowPieOverride ? isNavBarImmersive && !statusBarVisible : !statusBarVisible) ?
-                                PIE_MODE_FULL : (!mAllowPieOverride ? isNavBarImmersive : immersiveModeHidesNavigationBar()) ?
-                                PIE_MODE_LITE : PIE_MODE_NOT_SET));
 
                 // use alternative clear all view/button?
                 Settings.System.putInt(mContext.getContentResolver(), Settings.System.ALTERNATIVE_RECENTS_CLEAR_ALL,
@@ -4908,10 +4890,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 }
                 result &= ~ACTION_PASS_TO_USER;
                 if (down) {
-                    if (mImmersiveModeStyle == IMMERSIVE_MODE_OFF) {
-                        mImmersiveModeConfirmation.onPowerKeyDown(isScreenOn, event.getDownTime(),
-                                isImmersiveMode(mLastSystemUiFlags));
-                    }
                     if (isScreenOn && !mPowerKeyTriggered
                             && (event.getFlags() & KeyEvent.FLAG_FALLBACK) == 0) {
                         mPowerKeyTriggered = true;
